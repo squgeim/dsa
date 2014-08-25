@@ -18,7 +18,8 @@ int main(int argc, char* argv[])
 //	quick_sort(list,0,len-1);
 //	selection_sort(list,len);
 //	insertion_sort(list,len);
-	shell_sort(list,len);
+//	shell_sort(list,len);
+	list = merge_sort(list,len);
 
 	printf("The sorted list is: ");
 	for(i=0;i<len;i++) printf("%d  ",list[i]);
