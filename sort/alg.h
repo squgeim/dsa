@@ -98,4 +98,50 @@ void shell_sort(int *list,int len)
 	}
 }
 
+int* mergearray(int *a,int *b,int la,int lb)
+{
+	int *c,ap,bp,cp;
+	int lc=la+lb;
+	c = malloc((lc+1)*sizeof(int));
+	for(ap=0,bp=0,cp=0;ap<la&&bp<lb;cp++) {
+		if(a[ap]<b[bp])
+			c[cp]=a[ap++];
+		else
+			c[cp]=b[bp++];
+	}
+	while(ap<la)
+		c[cp++]=a[ap++];
+	while(bp<lb)
+		c[cp++]=b[bp++];
+
+	return c;
+}
+
+int* merge_sort(int *list, int len)
+{
+	int i;
+	int *a,*b,la,lb,half;
+
+	if(len==1||len==0) return list;
+	la = len/2;
+	a = malloc((la)*sizeof(int));
+	a = list;
+	lb = len - la;
+	b = malloc((lb)*sizeof(int));
+	b = &list[la];
+
+	printf("l1: ");
+	for(i=0;i<la;i++) printf("%d ",a[i]);
+	printf("\n");
+
+	printf("l2: ");
+	for(i=0;i<lb;i++) printf("%d ",b[i]);
+	printf("\n");
+
+	list = mergearray(merge_sort(a,la),merge_sort(b,lb),la,lb);
+	return list;
+}
+	
+	
+
 #endif
