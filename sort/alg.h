@@ -1,6 +1,8 @@
 #ifndef _alg_h
 #define _alg_h
 
+#include <math.h>
+
 void bubble_sort(int *list,int len)
 {
 	int pass,i,temp,j;
@@ -84,7 +86,7 @@ void insertion_sort(int *list, int len)
 
 void shell_sort(int *list,int len)
 {
-	int gap,pass,j,temp,min;
+	int gap,pass,j,temp;
 	for(gap=len/2;gap>0;gap/=2) {
 		for(pass=0;pass<len;pass+=gap) {
 			for(j=pass;j>0;j-=gap) {
@@ -120,7 +122,7 @@ int* mergearray(int *a,int *b,int la,int lb)
 int* merge_sort(int *list, int len)
 {
 	int i;
-	int *a,*b,la,lb,half;
+	int *a,*b,la,lb;
 
 	if(len==1||len==0) return list;
 	la = len/2;
@@ -142,6 +144,43 @@ int* merge_sort(int *list, int len)
 	return list;
 }
 	
+void radix_sort(int *list, int len)
+{
+	int **radix,sizes[10]={0},*tmp;
+	int i,j,k,ind,mod,lsd,max,maxd;
+
+	radix = malloc(10*sizeof(int*));
+	
+	for(i=0,max=0;i<len;i++)
+		if(list[i]>max) max=list[i];
+	if(max)
+		maxd = floor(log10(max)) + 1;
+	else
+		maxd = 0;
+	
+	for(i=0,mod=10;i<maxd;i++,mod*=10) {
+		for(j=0;j<len;j++) {
+			lsd = list[j]%mod;
+			lsd /= (mod/10);
+			sizes[lsd]++;
+			tmp = realloc(radix[lsd],sizes[lsd]*sizeof(int));
+			if(tmp) {
+				radix[lsd]=tmp;
+				free(tmp);
+			}
+			else {
+				printf("Sorry, something terrible happened.\n");
+				exit(-1);
+			}
+			radix[lsd][sizes[lsd]-1]=list[j];
+		}
+		ind=0;
+		for(j=0;j<10;j++)
+			for(k=0;k<sizes[j];k++)
+				list[ind++] = radix[j][k];
+	}	
+}
+			
 	
 
 #endif
